@@ -25,10 +25,10 @@ Update the configuration in `config.ts` with your specific settings, such as the
 Start the server:
 
 ```sh
-bun run src/server.ts
+bun start
 ```
 
-The application will be running on http://localhost:3000.
+The application will be running on http://localhost:{port}.
 
 Project Files
 
