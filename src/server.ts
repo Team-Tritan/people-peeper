@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { Client } from "discord.js-selfbot-v13";
+import { Client, User } from "discord.js-selfbot-v13";
 import express from "express";
 import path from "path";
 import { config } from "../config";
@@ -10,6 +10,8 @@ dayjs.extend(relativeTime);
 const server = express();
 const client = new Client();
 
+const users = new Map<string, User>();
+
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
 server.set("view engine", "ejs");
@@ -17,16 +19,10 @@ server.set("views", path.join(__dirname, "views"));
 
 server.get("/", async (req, res) => {
   try {
-    const friends = client.users.cache
-      .filter((user) => {
-        if (user.bot) return false;
-        if (user.id === client.user?.id) return false;
-        return true;
-      })
-      .map((user) => ({
-        id: user.id,
-        username: user.username,
-      }));
+    const friends = Array.from(users.values()).map((user) => ({
+      id: user.id,
+      username: user.username,
+    }));
 
     return res.render("index", { friends });
   } catch (error) {
@@ -44,7 +40,7 @@ server.get("/:id", async (req, res) => {
   if (id === "favicon.ico") return;
 
   try {
-    const user = await client.users.fetch(id);
+    const user = users.get(id);
 
     if (!user)
       return res.status(404).json({ error: true, message: "User not found" });
@@ -78,6 +74,14 @@ server.get("/:id", async (req, res) => {
 
 client.on("ready", (client) => {
   console.log(`Logged in as ${client.user.tag}`);
+
+  client.users.cache.forEach((user) => {
+    if (user.bot) return;
+    if (user.id === client.user?.id) return;
+    users.set(user.id, user);
+  });
+
+  console.log(`Cached ${users.size} friends`);
 });
 
 await client.login(config.userToken);
