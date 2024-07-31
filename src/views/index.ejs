@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>People Ping</title>
+    <style>
+      body {
+        background-color: #121212;
+        color: #ffffff;
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+
+      .container {
+        text-align: center;
+      }
+
+      select,
+      button {
+        background-color: #333333;
+        color: #ffffff;
+        border: 1px solid #ffffff;
+        padding: 10px;
+        margin: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+      }
+
+      select:focus,
+      button:focus {
+        outline: none;
+      }
+
+      button {
+        cursor: pointer;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>People Peeper</h1>
+      <p>Select a friend to stalk.</p>
+      <br />
+
+      <form action="/" method="get" onsubmit="redirectToUserPage(event)">
+        <select id="id-select" name="username">
+          <option value="">Select a friend...</option>
+          <% friends.forEach(friend => { %>
+          <option value="<%= friend.id %>"><%= friend.username %></option>
+          <% }); %>
+        </select>
+        <button type="submit">Go</button>
+      </form>
+    </div>
+
+    <script>
+      function redirectToUserPage(event) {
+        event.preventDefault();
+
+        let id = document.getElementById("id-select").value;
+
+        if (id) {
+          window.location.href = `/${id}`;
+        }
+      }
+    </script>
+  </body>
+</html>

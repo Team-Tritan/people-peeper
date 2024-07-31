@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>People Ping</title>
+    <style>
+      body {
+        background-color: #121212;
+        color: #ffffff;
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+
+      .container {
+        text-align: center;
+      }
+
+      .avatar {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        border: 3px solid #ffffff;
+      }
+
+      .last-response {
+        margin-top: 20px;
+        font-size: 18px;
+      }
+
+      .timestamp {
+        font-size: 14px;
+        color: #bbbbbb;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1><%= userName %></h1>
+
+      <img src="<%= avatarUrl %>" alt="Avatar" class="avatar" />
+
+      <div class="last-response">
+        Last response:
+        <span class="timestamp"><%= lastResponseTime %></span>
+      </div>
+
+      <div class="last-response">
+        Message content:
+        <span class="timestamp"><%= lastResponse %></span>
+      </div>
+    </div>
+  </body>
+</html>
